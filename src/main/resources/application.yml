@@ -1,0 +1,16 @@
+server:
+  port: 8012
+
+spring:
+  application:
+    name: notetakingappapi
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MariaDBDialect
+    properties:
+      hibernate: true
+  datasource:
+    url: jdbc:mariadb://localhost:3306/notetakingapp?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: notetaking
+    password: Passwrd#123
