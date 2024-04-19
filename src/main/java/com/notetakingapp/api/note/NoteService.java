@@ -1,17 +1,17 @@
 package com.notetakingapp.api.note;
 
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class NoteService {
 
     private final NoteRepository noteRepository;
 
+    @Autowired
     public NoteService(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
     }
@@ -22,6 +22,10 @@ public class NoteService {
 
     public Optional<Note> getNote(String id) {
         return noteRepository.findById(id);
+    }
+
+    public List<Note> getNotesById(String userId) {
+        return noteRepository.findNotesByUserId(userId);
     }
 
     public Note createNote(Note note) {

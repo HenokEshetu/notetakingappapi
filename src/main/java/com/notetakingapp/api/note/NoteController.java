@@ -27,6 +27,11 @@ public class NoteController {
         return new ResponseEntity<>(noteService.getNote(id), HttpStatus.OK);
     }
 
+    @GetMapping("/by-user-id/{userId}")
+    public ResponseEntity<List<Note>> getNoteByUserId(@PathVariable String userId) {
+        return new ResponseEntity<>(noteService.getNotesById(userId), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Note> createNote(@RequestBody Note note) {
         return new ResponseEntity<>(noteService.createNote(note), HttpStatus.CREATED);

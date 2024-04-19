@@ -29,8 +29,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> createUser(@RequestBody UserRegisterForm user) {
+        // generate asymmetric and symmetric keys
+
+//        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -41,6 +43,21 @@ public class UserController {
     @DeleteMapping("{id}/delete")
     public ResponseEntity<String> deleteUser(@PathVariable String id) {
         return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> authenticate(@RequestBody UserLoginForm loginForm) {
+
+    }
+
+    @GetMapping("/login/error")
+    public ResponseEntity<String> authenticationError() {
+
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout() {
+
     }
 
 }

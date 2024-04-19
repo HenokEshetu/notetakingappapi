@@ -6,7 +6,7 @@ spring:
     name: notetakingappapi
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
       dialect: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate: true

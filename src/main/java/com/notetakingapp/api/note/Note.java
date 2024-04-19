@@ -22,5 +22,7 @@ public class Note {
     private String title;
     @Column(length = 1000, nullable = false)
     private String body;
+    @Column(length = 36, nullable = false, updatable = false)
+    private String userId;
 
 }
