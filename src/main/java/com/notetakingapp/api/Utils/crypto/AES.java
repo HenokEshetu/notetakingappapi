@@ -9,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
-public class AES extends Crypto {
+public class AES {
 
     public static String encrypt(String plainText, String key) throws Exception {
         byte[] encodedKey = Base64.getDecoder().decode(key);
@@ -18,7 +18,7 @@ public class AES extends Crypto {
 
     public static String decrypt(String cipherText, String key) throws Exception {
         byte[] encodedKey = Base64.getDecoder().decode(key);
-        return Base64.getEncoder().encodeToString(encrypt(cipherText.getBytes(), encodedKey));
+        return new String(decrypt(cipherText.getBytes(), encodedKey));
     }
 
     public static byte[] encrypt(byte[] plainText, byte[] key) throws Exception {
@@ -37,7 +37,7 @@ public class AES extends Crypto {
 
     public static SecretKey generateKey(String password, String salt) throws Exception {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 765);
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
         return new SecretKeySpec(factory.generateSecret(spec)
                 .getEncoded(), "AES");
     }

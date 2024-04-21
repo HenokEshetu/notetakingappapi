@@ -28,7 +28,7 @@ public class User implements UserDetails {
     private String email;
     @NonNull
     private String password;
-    @Column(nullable = false, name = "profile_image_url")
+    @Column(nullable = false, name = "profile_image_url", columnDefinition = "TEXT")
     private String profileImageUrl;
     @Enumerated(EnumType.STRING)
     private Role role;

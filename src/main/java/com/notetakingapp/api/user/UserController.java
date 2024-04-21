@@ -29,10 +29,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserRegisterForm user) {
-        // generate asymmetric and symmetric keys
-
-//        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> createUser(@RequestBody UserRegisterForm user) throws Exception {
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -46,18 +44,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticate(@RequestBody UserLoginForm loginForm) {
-
+    public AuthResponse authenticate(@RequestBody UserLoginForm loginForm) throws Exception {
+        return userService.login(loginForm);
     }
-
-    @GetMapping("/login/error")
-    public ResponseEntity<String> authenticationError() {
-
-    }
-
-    @GetMapping("/logout")
-    public ResponseEntity<String> logout() {
-
-    }
+//
+//    @GetMapping("/login/error")
+//    public ResponseEntity<String> authenticationError() {
+//
+//    }
+//
+//    @GetMapping("/logout")
+//    public ResponseEntity<String> logout() {
+//
+//    }
 
 }

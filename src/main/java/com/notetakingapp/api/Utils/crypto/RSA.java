@@ -1,13 +1,17 @@
 package com.notetakingapp.api.Utils.crypto;
 
 import javax.crypto.Cipher;
+import java.math.BigInteger;
 import java.security.*;
+import java.security.PrivateKey;
+
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
 
-public class RSA extends Crypto {
+public class RSA {
 
     public static String encrypt(String plainText, String publicKey) throws Exception {
         PublicKey originalPublicKey = loadPublicKey(publicKey);
@@ -22,26 +26,21 @@ public class RSA extends Crypto {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, originalPrivateKey);
         byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(cipherText));
-        return Base64.getEncoder().encodeToString(decryptedBytes);
+        return new String(decryptedBytes);
     }
 
     public static PublicKey loadPublicKey(String publicKey) throws Exception {
-        publicKey = publicKey.replaceAll("\\n", "").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
-        byte[] data = Base64.getDecoder().decode(publicKey.getBytes());
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
+        byte[] publicBytes = Base64.getDecoder().decode(publicKey);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(publicBytes);
         KeyFactory fact = KeyFactory.getInstance("RSA");
         return fact.generatePublic(spec);
     }
 
-
     public static PrivateKey loadPrivateKey(String privateKey) throws Exception {
-        privateKey = privateKey.replaceAll("\\n", "").replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
-        byte[] clear = Base64.getDecoder().decode(privateKey.getBytes());
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
+        byte[] privateBytes = Base64.getDecoder().decode(privateKey);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateBytes);
         KeyFactory fact = KeyFactory.getInstance("RSA");
-        PrivateKey _privateKey = fact.generatePrivate(keySpec);
-        Arrays.fill(clear, (byte) 0);
-        return _privateKey;
+        return fact.generatePrivate(keySpec);
     }
 
     public static KeyPair generateKeyPair() throws Exception {
@@ -49,5 +48,14 @@ public class RSA extends Crypto {
         generator.initialize(2048);
         return generator.generateKeyPair();
     }
+
+//    public static HashMap<String, BigInteger> getModExp(byte[] decodedKey) throws Exception {
+//        BigInteger modulus = new BigInteger(1, Arrays.copyOfRange(decodedKey, 0, decodedKey.length / 2));
+//        BigInteger exponent = new BigInteger(1, Arrays.copyOfRange(decodedKey, decodedKey.length / 2, decodedKey.length));
+//        HashMap<String, BigInteger> modExp = new HashMap<>();
+//        modExp.put("modulus", modulus);
+//        modExp.put("exponent", exponent);
+//        return modExp;
+//    }
 
 }
