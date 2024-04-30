@@ -1,5 +1,6 @@
-package com.notetakingapp.api.user;
+package com.notetakingapp.api.key;
 
+import com.notetakingapp.api.key.Key;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

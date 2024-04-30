@@ -1,4 +1,4 @@
-package com.notetakingapp.api.user;
+package com.notetakingapp.api.key;
 
 import jakarta.persistence.*;
 import lombok.Data;

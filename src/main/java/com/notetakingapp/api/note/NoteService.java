@@ -1,14 +1,12 @@
 package com.notetakingapp.api.note;
 
-import com.notetakingapp.api.Utils.crypto.AES;
-import com.notetakingapp.api.Utils.crypto.RSA;
-import com.notetakingapp.api.user.Key;
-import com.notetakingapp.api.user.KeyRepository;
+import com.notetakingapp.api.crypto.AES;
+import com.notetakingapp.api.crypto.RSA;
+import com.notetakingapp.api.key.Key;
+import com.notetakingapp.api.key.KeyRepository;
 import com.notetakingapp.api.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Encryption;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,8 +25,8 @@ public class NoteService {
         return NoteMapper.getNotes(decryptNote(noteDtoList));
     }
 
-    public Note getNote(String userId) throws Exception {
-        Optional<Note> note = noteRepository.findByNoteId(userId);
+    public Note getNote(String noteId) throws Exception {
+        Optional<Note> note = noteRepository.findByNoteId(noteId);
         NoteDto noteDto = NoteMapper.getNoteDto(note.orElseThrow());
         return NoteMapper.getNote(decryptNote(noteDto));
     }

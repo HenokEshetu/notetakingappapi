@@ -1,4 +1,4 @@
-package com.notetakingapp.api.Utils.crypto;
+package com.notetakingapp.api.crypto;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;

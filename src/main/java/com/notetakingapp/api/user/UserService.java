@@ -1,29 +1,29 @@
 package com.notetakingapp.api.user;
 
-import com.notetakingapp.api.Utils.crypto.AES;
-import com.notetakingapp.api.Utils.crypto.RSA;
-//import com.notetakingapp.api.Utils.security.JwtProvider;
+import com.notetakingapp.api.auth.RegisterRequest;
+import com.notetakingapp.api.crypto.AES;
+import com.notetakingapp.api.crypto.RSA;
+import com.notetakingapp.api.key.Key;
+import com.notetakingapp.api.key.KeyRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.*;
+import java.security.KeyPair;
+import java.security.MessageDigest;
+import java.security.Principal;
+import java.security.SecureRandom;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final KeyRepository keyRepository;
-    private final PasswordEncoder passwordEncoder;
-//    private final AuthenticationManager authenticationManager;
-//    private final JwtProvider jwtProvider;
 
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -33,15 +33,14 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public User createUser(UserRegisterForm userRequest) throws Exception {
+    public User createUser(RegisterRequest userRequest) throws Exception {
         String password = passwordEncoder.encode(userRequest.getPassword());
 
         User user = new User();
-        user.setUserId(UUID.randomUUID().toString());
+        user.setId(UUID.randomUUID().toString());
         user.setFullName(userRequest.getFullName());
         user.setEmail(userRequest.getEmail());
         user.setPassword(password);
-        user.setProfileImageUrl(userRequest.getProfileImageUrl());
         user.setRole(Role.USER);
 
         HashMap<String, String> keys = generateAllKeys(password);
@@ -58,7 +57,7 @@ public class UserService {
         key.setSalt1Key(salt1Key);
         key.setSalt2Key(salt2Key);
         key.setSymmetricKey(symmetricKey);
-        key.setUserId(user.getUserId());
+        key.setUserId(user.getId());
         User u = userRepository.saveAndFlush(user);
         keyRepository.saveAndFlush(key);
         return u;
@@ -98,18 +97,14 @@ public class UserService {
 
     @Transactional
     public String deleteUser(String id) {
-        Optional<User> user = userRepository.findByUserId(id);
-        keyRepository.deleteByUserId(user.orElseThrow().getUserId());
+        Optional<User> user = userRepository.findById(id);
+        keyRepository.deleteByUserId(user.orElseThrow().getId());
         userRepository.deleteById(id);
         return "OK";
     }
 
-    public AuthResponse login(UserLoginForm loginForm) throws Exception {
-//        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authenticate);
-//        String token = jwtProvider.generateToken(authenticate);
-//        return new AuthResponse(token, loginForm.getUsername());
-        return null;
+    public String getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        return "{\"id\": \"" + user.getId() + "\", \"fullName\": \"" + user.getFullName() + "\", \"email\": \"" + email + "\"}";
     }
-
 }
