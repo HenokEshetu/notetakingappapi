@@ -69,7 +69,7 @@ README.md
 ### 1. Clone & Configure
 
 ```bash
-git clone https://github.com/yourusername/notetakingappapi.git
+git clone https://github.com/HenokEshetu/notetakingappapi.git
 cd notetakingappapi
 ```
 
