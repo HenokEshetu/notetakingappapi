@@ -3,6 +3,8 @@
 A secure, modern RESTful API for encrypted note-taking, built with Spring Boot, JPA, JWT authentication, and strong cryptography (AES & RSA). Designed for privacy, extensibility, and ease of integration with frontend clients.
 
 ---
+[![Watch the video](https://img.youtube.com/vi/QkF1usPAFcA/hqdefault.jpg)](https://www.youtube.com/watch?v=QkF1usPAFcA)
+---
 
 ## 🚀 Features
 
